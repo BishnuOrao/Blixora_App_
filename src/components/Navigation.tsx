@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
-import { Brain, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const Navigation = () => {
@@ -11,6 +11,7 @@ const Navigation = () => {
     { name: "Home", path: "/" },
     { name: "Simulations", path: "/simulations" },
     { name: "Dashboard", path: "/dashboard" },
+    { name: "About", path: "/about" },
   ];
 
   return (
@@ -18,14 +19,12 @@ const Navigation = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="relative">
-              <Brain className="h-8 w-8 text-primary animate-pulse-slow" />
-              <div className="absolute inset-0 bg-primary rounded-full blur-md opacity-30 animate-glow"></div>
-            </div>
-            <span className="font-bold text-xl bg-gradient-cyber bg-clip-text text-transparent">
-              Blixora Labs
-            </span>
+          <Link to="/" className="flex items-center logo-hover">
+            <img 
+              src="/blixora-logo.svg" 
+              alt="Blixora Labs" 
+              className="h-12 w-auto object-contain"
+            />
           </Link>
 
           {/* Desktop Navigation */}

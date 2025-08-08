@@ -18,44 +18,48 @@ import {
   AlertCircle
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Dashboard = () => {
-  const [user, setUser] = useState<any>(null);
+  const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (!isLoggedIn) {
+    console.log('🏠 Dashboard: Checking authentication...');
+    console.log('🏠 Dashboard: isAuthenticated:', isAuthenticated);
+    console.log('🏠 Dashboard: user:', user);
+    
+    if (!isAuthenticated) {
+      console.log('🚫 Dashboard: User not authenticated, redirecting to login');
       navigate("/login");
       return;
     }
 
-    // Mock user data
-    setUser({
-      name: localStorage.getItem("userName") || "Student",
-      email: localStorage.getItem("userEmail") || "student@example.com",
-      joinDate: "January 2024",
-      totalSimulations: 12,
-      completedSimulations: 8,
-      inProgressSimulations: 3,
-      points: 2840,
-      level: "Intermediate"
-    });
-  }, [navigate]);
+    console.log('✅ Dashboard: User authenticated, displaying dashboard');
+  }, [isAuthenticated, navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("userName");
+  const handleLogout = async () => {
+    console.log('🚪 Dashboard: Logging out...');
     
-    toast({
-      title: "Logged out",
-      description: "You have been successfully logged out.",
-    });
-    
-    navigate("/");
+    try {
+      await logout();
+      
+      toast({
+        title: "Logged out",
+        description: "You have been successfully logged out.",
+      });
+      
+      navigate("/");
+    } catch (error) {
+      console.error('❌ Dashboard: Logout error:', error);
+    }
   };
+
+  // Show loading or redirect if not authenticated
+  if (!isAuthenticated || !user) {
+    return <div>Loading...</div>;
+  }
 
   const enrolledSimulations = [
     {
@@ -298,14 +302,14 @@ const Dashboard = () => {
                       <p className="text-sm text-muted-foreground">{user.email}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground">Level</p>
+                      <p className="text-sm text-muted-foreground">Role</p>
                       <Badge className="bg-primary/10 text-primary border-primary/20">
-                        {user.level}
+                        {user.role || 'Student'}
                       </Badge>
                     </div>
                     <div>
                       <p className="text-sm text-muted-foreground">Member since</p>
-                      <p className="font-medium">{user.joinDate}</p>
+                      <p className="font-medium">{new Date(user.createdAt || Date.now()).toLocaleDateString()}</p>
                     </div>
                   </CardContent>
                 </Card>

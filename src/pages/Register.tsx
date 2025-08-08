@@ -6,8 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import Navigation from "@/components/Navigation";
 import { Link, useNavigate } from "react-router-dom";
-import { Brain, Eye, EyeOff, Mail, Lock, User } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { register } = useAuth();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -29,6 +31,12 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    console.log('🚀 Registration form submitted with data:', {
+      name: formData.fullName.trim(),
+      email: formData.email.trim(),
+      password: formData.password ? '[HIDDEN]' : 'empty'
+    });
     
     if (!acceptTerms) {
       toast({
@@ -57,23 +65,73 @@ const Register = () => {
       return;
     }
 
-    setIsLoading(true);
-
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      
-      localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userEmail", formData.email);
-      localStorage.setItem("userName", formData.fullName);
-      
+    if (!formData.fullName.trim()) {
       toast({
-        title: "Account created!",
-        description: "Welcome to Blixora Labs. Your account has been created successfully.",
+        title: "Name required",
+        description: "Please enter your full name.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!formData.email.trim()) {
+      toast({
+        title: "Email required",
+        description: "Please enter your email address.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    console.log('📡 Calling register API...');
+
+    try {
+      const userData = {
+        name: formData.fullName.trim(),
+        email: formData.email.trim(),
+        password: formData.password
+      };
+      
+      console.log('📤 Sending registration data to API:', {
+        name: userData.name,
+        email: userData.email,
+        password: '[HIDDEN]'
       });
       
-      navigate("/dashboard");
-    }, 1500);
+      const response = await register(userData);
+      
+      console.log('📥 Registration response received:', {
+        success: response.success,
+        userId: response.data?.user?._id,
+        userName: response.data?.user?.name,
+        hasToken: !!response.data?.token
+      });
+      
+      if (response.success) {
+        console.log('✅ Registration successful! User saved to MongoDB Atlas');
+        console.log('📊 Full registration response:', response);
+        
+        toast({
+          title: "Account created!",
+          description: `Welcome to Blixora Labs! Your account has been created successfully.`,
+        });
+        
+        // Navigate to dashboard (most users will be regular users)
+        console.log('🚀 Navigating to dashboard...');
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      console.error('❌ Registration failed:', error);
+      toast({
+        title: "Registration failed",
+        description: error.message || "There was an error creating your account. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+      console.log('🏁 Registration process completed');
+    }
   };
 
   return (
@@ -83,11 +141,12 @@ const Register = () => {
       <div className="pt-16 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <div className="flex justify-center mb-4">
-              <div className="relative">
-                <Brain className="h-12 w-12 text-primary animate-pulse-slow" />
-                <div className="absolute inset-0 bg-primary rounded-full blur-md opacity-30 animate-glow"></div>
-              </div>
+            <div className="flex justify-center mb-8">
+              <img 
+                src="/blixora-logo.svg" 
+                alt="Blixora Labs" 
+                className="h-20 w-auto object-contain"
+              />
             </div>
             <h2 className="text-3xl font-bold">
               Join Blixora Labs

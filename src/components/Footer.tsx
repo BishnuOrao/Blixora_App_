@@ -1,4 +1,4 @@
-import { Brain, Clock, Mail } from "lucide-react";
+import { Clock, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -8,11 +8,12 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo & Tagline */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Brain className="h-6 w-6 text-primary" />
-              <span className="font-bold text-lg bg-gradient-cyber bg-clip-text text-transparent">
-                Blixora Labs
-              </span>
+            <div className="flex items-center">
+              <img 
+                src="/blixora-logo.svg" 
+                alt="Blixora Labs" 
+                className="h-10 w-auto object-contain opacity-90"
+              />
             </div>
             <p className="text-muted-foreground text-sm">
               Simulate. Solve. Succeed.

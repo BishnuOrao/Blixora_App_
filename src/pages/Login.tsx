@@ -6,8 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import Navigation from "@/components/Navigation";
 import { Link, useNavigate } from "react-router-dom";
-import { Brain, Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -17,34 +18,47 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!email || !password) {
+      toast({
+        title: "Missing fields",
+        description: "Please enter both email and password.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const response = await login(email, password);
       
-      // Mock validation
-      if (email && password) {
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("userEmail", email);
-        
+      if (response.success) {
         toast({
           title: "Welcome back!",
-          description: "You have successfully logged in.",
+          description: `Hello ${response.data.user.name}! You have successfully logged in.`,
         });
         
-        navigate("/dashboard");
-      } else {
-        toast({
-          title: "Login failed",
-          description: "Please check your credentials and try again.",
-          variant: "destructive",
-        });
+        // Navigate based on user role
+        if (response.data.user.role === 'admin') {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/dashboard");
+        }
       }
-    }, 1000);
+    } catch (error: any) {
+      toast({
+        title: "Login failed",
+        description: error.message || "Please check your credentials and try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -54,11 +68,12 @@ const Login = () => {
       <div className="pt-16 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div className="text-center">
-            <div className="flex justify-center mb-4">
-              <div className="relative">
-                <Brain className="h-12 w-12 text-primary animate-pulse-slow" />
-                <div className="absolute inset-0 bg-primary rounded-full blur-md opacity-30 animate-glow"></div>
-              </div>
+            <div className="flex justify-center mb-8">
+              <img 
+                src="/blixora-logo.svg" 
+                alt="Blixora Labs" 
+                className="h-20 w-auto object-contain"
+              />
             </div>
             <h2 className="text-3xl font-bold">
               Welcome Back

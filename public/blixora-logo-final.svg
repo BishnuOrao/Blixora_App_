@@ -1,0 +1,41 @@
+<svg viewBox="0 0 500 150" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hexagonal icon -->
+  <g transform="translate(20, 25)">
+    <!-- Hexagon outline with gradient -->
+    <defs>
+      <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#1e40af;stop-opacity:1" />
+      </linearGradient>
+    </defs>
+    
+    <polygon
+      points="50,10 85,30 85,70 50,90 15,70 15,30"
+      fill="none"
+      stroke="url(#blueGradient)"
+      stroke-width="4"
+      stroke-linejoin="round"
+    />
+    
+    <!-- Network nodes -->
+    <circle cx="35" cy="40" r="5" fill="#3b82f6" />
+    <circle cx="65" cy="40" r="5" fill="#3b82f6" />
+    <circle cx="35" cy="60" r="5" fill="#3b82f6" />
+    <circle cx="65" cy="60" r="5" fill="#3b82f6" />
+    <circle cx="50" cy="70" r="5" fill="#3b82f6" />
+    
+    <!-- Network connections -->
+    <line x1="40" y1="40" x2="60" y2="40" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" />
+    <line x1="35" y1="45" x2="35" y2="55" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" />
+    <line x1="65" y1="45" x2="65" y2="55" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" />
+    <line x1="40" y1="60" x2="45" y2="67" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" />
+    <line x1="60" y1="60" x2="55" y2="67" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" />
+    <line x1="60" y1="45" x2="40" y2="55" stroke="#3b82f6" stroke-width="3" stroke-linecap="round" />
+  </g>
+  
+  <!-- Blixora Labs text -->
+  <text x="130" y="85" font-family="'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif" 
+        font-size="48" font-weight="700" fill="#3b82f6" letter-spacing="-0.02em">
+    Blixora Labs
+  </text>
+</svg>
