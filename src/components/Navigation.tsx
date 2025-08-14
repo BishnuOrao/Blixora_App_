@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Brain, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const Navigation = () => {
@@ -11,7 +11,6 @@ const Navigation = () => {
     { name: "Home", path: "/" },
     { name: "Simulations", path: "/simulations" },
     { name: "Dashboard", path: "/dashboard" },
-    { name: "About", path: "/about" },
   ];
 
   return (
@@ -21,7 +20,7 @@ const Navigation = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center logo-hover">
             <img 
-              src="/blixora-logo.svg" 
+              src="/blixora-logo.png" 
               alt="Blixora Labs" 
               className="h-12 w-auto object-contain"
             />

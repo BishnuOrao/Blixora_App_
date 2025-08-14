@@ -10,7 +10,7 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center">
               <img 
-                src="/blixora-logo.svg" 
+                src="/blixora-logo.png" 
                 alt="Blixora Labs" 
                 className="h-10 w-auto object-contain opacity-90"
               />
