@@ -1,6 +1,6 @@
 # Blixora Labs - Simulation Portal
 
-![Blixora Labs Logo](public/Blixora_final_svg.png)
+![Blixora Labs Logo](public/Blixora_logo.png)
 
 A cutting-edge simulation platform connecting professionals with advanced simulation technologies. Built with modern web technologies and a focus on seamless user experience.
 
@@ -219,6 +219,7 @@ For support, email support@blixoralabs.com or create an issue in this repository
 <img width="1894" height="875" alt="image" src="https://github.com/user-attachments/assets/a9cd4377-742a-4be3-b158-ce708c4263ae" />
 
 <img width="1891" height="868" alt="image" src="https://github.com/user-attachments/assets/e0cf8e84-c08c-4768-9980-2e4ea348e1db" />
+
 
 
 
